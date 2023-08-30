@@ -138,9 +138,7 @@ let rangeObject = {
   },
   next() {
     if (this.current < this.to) {
-      const result = { value: this.current, done: false };
-      this.current++;
-      return result;
+      return { value: this.current++, done: false };
     } else {
       return { done: true };
     }
@@ -152,10 +150,10 @@ function useSymbolIterator(obj) {
   // Проходимо крізь елементи об'єкта obj, використовуючи цикл "for...of"
   // Додаємо кожне значення до масиву "result"
   // Повертаємо масив зі значеннями
-  const result = [];
+  let result = [];
 
-  for (const value of rangeObject) {
-    result.push(value);
+  for (let value of obj) {
+    result = [...result, value];
   }
 
   return result;
@@ -188,15 +186,14 @@ let myObject = {
   // Повертаємо об'єкт з властивістю value значенням якої буде value,та прапорцем done: false
   //Якщо властивість об'єкту currentIndex більше або дорівнює довжині масиву category повертаємо об'єкт з прапорцем done: true, коли ітерація закінчена
   currentIndex: 0,
-  [Symbol.iterator](myObject) {
+  [Symbol.iterator]() {
     return this;
   },
   next() {
     if (this.currentIndex < this.category.length) {
-      let value = this.category[this.currentIndex].name;
-      console.log(value);
+      const value = this.category[this.currentIndex].name;
       this.currentIndex++;
-      return { value: "value", done: false };
+      return { value, done: false };
     } else if (this.currentIndex >= this.category.length) {
       return { done: true };
     }
